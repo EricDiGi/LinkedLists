@@ -18,13 +18,13 @@ DoubleLinked::DoubleLinked(Node* node){
 }
 
 DoubleLinked::DoubleLinked(const DoubleLinked &L){
-    Node* NEXT = NULL;
-    Node* CURR = NULL;
+    //Node* NEXT = NULL;
+    //Node* CURR = NULL;
     if(L.list == NULL){
         this->list = NULL;
     }
     else{
-        this->list = new Node();
+        /*this->list = new Node();
         list->data = L.list->data;
         Node* HEAD = L.list;
         NEXT = L.list->next;
@@ -35,12 +35,35 @@ DoubleLinked::DoubleLinked(const DoubleLinked &L){
             CURR = CURR->next;
             CURR->prev = NEXT->prev;
             NEXT = NEXT->next;
+	
         }
         if(NEXT == HEAD){
             CURR->next = NULL;
+        }*/
+	Node * ptrCurr = L.list;
+	Node * ptrNew = nullptr;
+	Node * newHead = nullptr;
+	Node * newPrev = nullptr;
+
+	while(ptrCurr!=nullptr){
+ 	    ptrNew = new Node();
+	    ptrNew->data = ptrCurr->data;
+	    if (!newHead){
+		    newHead = ptrNew;
+		    ptrNew->prev = nullptr;
+        }else{
+		    ptrNew->prev = newPrev;
+		    newPrev->next = ptrNew; 
+            }
+  	        newPrev = ptrNew;
+	        ptrCurr = ptrCurr->next;
         }
+	    //this->tail = newPrev;
+	    newPrev->next = nullptr;
+	    this->list = newHead;
     }
 }
+
 
 DoubleLinked::~DoubleLinked(){
     delete this->list;
