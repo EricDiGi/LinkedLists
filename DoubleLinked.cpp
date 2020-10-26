@@ -25,12 +25,13 @@ DoubleLinked::DoubleLinked(const DoubleLinked &L){
     else{
         //Circular Case
         bool circ = ((L.list->prev != NULL )&&(L.list->prev->next == L.list));
+        Node* JAIL = L.list;
         if(circ){
-            L.list->prev->next = NULL;
-            L.list->prev = NULL;
+            JAIL->prev->next = NULL;
+            JAIL->prev = NULL;
         }
         //---------
-        Node * ptrCurr = L.list;
+        Node * ptrCurr = JAIL;
         Node * ptrNew = nullptr;
         Node * newHead = nullptr;
         Node * newPrev = nullptr;
@@ -48,7 +49,6 @@ DoubleLinked::DoubleLinked(const DoubleLinked &L){
                 newPrev = ptrNew;
                 ptrCurr = ptrCurr->next;
             }
-            //this->tail = newPrev;
         newPrev->next = nullptr;
         this->list = newHead;
         //Circular case cont.
@@ -71,7 +71,6 @@ DoubleLinked::~DoubleLinked(){
 
 void DoubleLinked::push(int ndat){
     Node* newNode = new Node(ndat);
-    //bool circ = isCircular();
     Node* temp = this->list;
     Node* end = this->list;
     while(end != NULL){
@@ -135,15 +134,12 @@ void DoubleLinked::replace(int loc, int ndat){
 void DoubleLinked::stitch(){
     Node* iter = this->list;
     Node* head = this->list;
-    //int count = 0;
     while(iter!=NULL){
         iter = iter->next;
-        //count++;
         if(iter->next == NULL){break;}
     }
     head->prev = iter;
     iter->next = head;
-    //this->length = count+1;
 }
 
 void DoubleLinked::rip(int loc){
