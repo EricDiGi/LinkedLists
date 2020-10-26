@@ -15,3 +15,9 @@ Node::Node(int data){
     this->next = NULL; // Broke the code in hpp file
     this->prev = NULL; // Broke the code in hpp file
 }
+
+Node::~Node(){
+    next = NULL;
+    prev = NULL;
+    //data = NULL;
+}

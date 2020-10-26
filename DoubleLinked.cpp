@@ -17,51 +17,51 @@ DoubleLinked::DoubleLinked(Node* node){
     //this->length = -1;
 }
 
+//Should cover the circular case and linear case
 DoubleLinked::DoubleLinked(const DoubleLinked &L){
-    //Node* NEXT = NULL;
-    //Node* CURR = NULL;
     if(L.list == NULL){
         this->list = NULL;
     }
     else{
-        /*this->list = new Node();
-        list->data = L.list->data;
-        Node* HEAD = L.list;
-        NEXT = L.list->next;
-        CURR = this->list;
-        while((NEXT != NULL) || (NEXT != HEAD)){
-            CURR->next = new Node();
-            CURR->data = NEXT->data;
-            CURR = CURR->next;
-            CURR->prev = NEXT->prev;
-            NEXT = NEXT->next;
-	
+        //Circular Case
+        bool circ = ((L.list->prev != NULL )&&(L.list->prev->next == L.list));
+        if(circ){
+            L.list->prev->next = NULL;
+            L.list->prev = NULL;
         }
-        if(NEXT == HEAD){
-            CURR->next = NULL;
-        }*/
-	Node * ptrCurr = L.list;
-	Node * ptrNew = nullptr;
-	Node * newHead = nullptr;
-	Node * newPrev = nullptr;
+        //---------
+        Node * ptrCurr = L.list;
+        Node * ptrNew = nullptr;
+        Node * newHead = nullptr;
+        Node * newPrev = nullptr;
 
-	while(ptrCurr!=nullptr){
- 	    ptrNew = new Node();
-	    ptrNew->data = ptrCurr->data;
-	    if (!newHead){
-		    newHead = ptrNew;
-		    ptrNew->prev = nullptr;
-        }else{
-		    ptrNew->prev = newPrev;
-		    newPrev->next = ptrNew; 
+        while(ptrCurr!=nullptr){
+            ptrNew = new Node();
+            ptrNew->data = ptrCurr->data;
+            if (!newHead){
+                newHead = ptrNew;
+                ptrNew->prev = nullptr;
+            }else{
+                ptrNew->prev = newPrev;
+                newPrev->next = ptrNew; 
+                }
+                newPrev = ptrNew;
+                ptrCurr = ptrCurr->next;
             }
-  	        newPrev = ptrNew;
-	        ptrCurr = ptrCurr->next;
+            //this->tail = newPrev;
+        newPrev->next = nullptr;
+        this->list = newHead;
+        //Circular case cont.
+        if(circ){
+            Node* head = this->list;
+            Node* temp = this->list;
+            while((this->list->prev == NULL) && temp->next != NULL){
+                temp = temp->next;
+            }
+            head->prev = temp;
+            temp->next = head;
         }
-	    //this->tail = newPrev;
-	    newPrev->next = nullptr;
-	    this->list = newHead;
-    }
+        }
 }
 
 
@@ -71,6 +71,7 @@ DoubleLinked::~DoubleLinked(){
 
 void DoubleLinked::push(int ndat){
     Node* newNode = new Node(ndat);
+    //bool circ = isCircular();
     Node* temp = this->list;
     Node* end = this->list;
     while(end != NULL){
@@ -106,6 +107,7 @@ void DoubleLinked::insert(int loc, int ndat){
         push(ndat);
         return;
     }
+    else{
     Node* newNode = new Node(ndat);
     Node* iter = this->list;
     for(int i = 0; i < loc-1; i++){
@@ -114,10 +116,11 @@ void DoubleLinked::insert(int loc, int ndat){
     newNode->next = iter->next;
     newNode->prev = iter->prev;
     iter->next = newNode;
+    }
 }
 
 void DoubleLinked::replace(int loc, int ndat){
-    if(list == NULL || loc == 0){
+    if(list == NULL){
         push(ndat);
         return;
     }

@@ -9,6 +9,7 @@ class Node{
         Node* prev;
         Node();
         Node(int data);
+        ~Node();
 };
 
 
