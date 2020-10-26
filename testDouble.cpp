@@ -24,6 +24,7 @@ int main(){
     F.append(99);
     F.replace(0,222);
     F.insert(0,111);
+    //F.rip(6); //Unlink circular list at 6
     cout << F;
     cout << dl.isCircular() << endl;
 }
