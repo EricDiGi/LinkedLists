@@ -25,6 +25,8 @@ SingleLinked::~SingleLinked(){
 ####################################*/
 
 void SingleLinked::append(int ndat){
+    bool needFix = isCircular();
+    if(needFix){rip(0);}
     Node* last = list;
 
     //build node to append
@@ -44,10 +46,13 @@ void SingleLinked::append(int ndat){
         last = last->next;
     }
     last->next = newNode;
+    if(needFix){stitch();}
     return;
 }
 
 void SingleLinked::push(int ndat){
+    bool needFix = isCircular();
+    if(needFix){rip(0);}
     Node* last = this->list;
 
     Node* newNode = new Node();
@@ -56,11 +61,15 @@ void SingleLinked::push(int ndat){
     last = newNode;
 
     this->list = last;
+    if(needFix){stitch();}
 }
 
 void SingleLinked::insert(int loc, int ndat){
+    bool needFix = isCircular();
+    if(needFix){rip(0);}
    if(loc == 0){
 		push(ndat);
+        if(needFix){stitch();}
 		return;
 	}
 
@@ -71,24 +80,40 @@ void SingleLinked::insert(int loc, int ndat){
 	}
 	newNode->next = temp->next;
 	temp->next = newNode;
+    if(needFix){stitch();}
 	return;
 }
 
 void SingleLinked::remove(int loc){
+    bool needFix = isCircular();
+    //rip(0);
 	if(this->list == NULL)
         return;
 
+    Node* temp = NULL;
+    Node* cursor = NULL;
+
     if(loc == 0){
         this->list = this->list->next;
+        temp = this->list;
+        while(temp->next != NULL){
+            if(temp->next->next == this->list){break;}
+            temp = temp->next;
+        }
+        if(needFix){cursor = this->list;}
+        temp->next = cursor;
         return;
     }
-    Node* temp = list;
-	Node* newNode = new Node();
+
+    temp = this->list;
+	cursor = this->list->next;
+    if(loc > size()-1){loc = size();}
 	for(int i = 0; i < loc-1; i++){
 		temp = temp->next;
+        cursor = cursor->next;
 	}
-	newNode = temp->next->next;
-	temp->next = newNode;
+	temp->next = cursor->next;
+    if(needFix){stitch();}
 	return;
 
 }
@@ -112,6 +137,8 @@ int SingleLinked::at(int loc){
 ####################################*/
 
 void SingleLinked::reverse(){
+    bool needFix = isCircular();
+    if(needFix){rip(0);}
     Node* curr = list;
     Node* prev = NULL;
     Node* next = NULL;
@@ -123,25 +150,32 @@ void SingleLinked::reverse(){
         curr = next;
     }
     list = prev;
-
+    if(needFix){stitch();}
     //Look idk either but it works
 }
 
 Node* SingleLinked::pop(){
     Node* out = new Node();
+    Node* cursor = NULL;
     if(this->list == NULL)
         return out;
+
     if(size()-1 <= 0){
         this->list = NULL;
         return out;
     }
+
+    bool circ = isCircular();
+    if(circ){cursor = this->list->next;}
+
     Node* temp = this->list;
-    for(int i = 0; i < size()-2; i++){
+    for(int i = 0; i < size()-1; i++){
         temp = temp->next;
+        cursor = circ ? cursor->next : NULL;
     }
     out->data = temp->next->data;
     out->next = NULL;
-    temp->next = NULL;
+    temp->next = circ ? cursor->next : NULL;
     return out;
 }
 //COPY ORIGINAL FIRST
@@ -158,19 +192,80 @@ void SingleLinked::sublist(int from, int to){
 }
 
 /*##################################
+               Circular
+###################################*/
+
+void SingleLinked::stitch(){
+    if(this->list == NULL){return;}
+    if(isCircular()){return;} //shouldn't stitch an already circular list
+    Node* temp = this->list;
+    while(temp->next != NULL){
+        temp = temp->next;
+    }
+    temp->next = this->list;
+}
+
+void SingleLinked::rip(int loc){
+    //Cant operate on NULL or nonCircular list
+    if(this->list == NULL){return;}
+    if(!isCircular()){return;}
+    //Special case
+    if(loc == 0){
+        Node* temp = this->list;
+        while(temp->next!=this->list){
+            temp = temp->next;
+        }
+        temp->next = NULL;
+        return;
+    }
+    //generic case
+    Node* temp = this->list;
+    Node* cursor = temp->next;
+    for(int i = 0; i < loc-1; i++){
+        temp = temp->next;
+        cursor = cursor->next;
+    }
+    temp->next = NULL;
+    this->list = cursor;
+}
+
+void SingleLinked::shift(int by){
+    if(this->list == NULL){return;}
+    if(isCircular()){
+        rip(by);
+        stitch();
+    }
+    else{
+        stitch();
+        rip(by);
+    }
+}
+
+/*##################################
                 Metrics
 ####################################*/
 
 int SingleLinked::size(){
     Node* temp = this->list;
-    int iter = 1;
+    Node* head = this->list;
+    int iter = 0;
     while(temp->next != NULL){
+        if(temp->next == head){break;}
         iter++;
         temp = temp->next;
     }
     return iter;
 }
 
+bool SingleLinked::isCircular(){
+    Node* head = this->list;
+    Node* temp = this->list;
+    while(temp != NULL){
+        if(temp->next == head){return true;}
+        temp = temp->next;
+    }
+    return false;
+}
 
 
 

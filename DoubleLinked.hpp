@@ -49,7 +49,7 @@ class DoubleLinked{
             while(ll != NULL){
                 out << ll->data << " ";
                 ll = ll->next;
-                if(ll == head){break;}
+                if(ll == head){break;} //circular case
             }
             out << std::endl;
             //out << "list len: " << std::endl;

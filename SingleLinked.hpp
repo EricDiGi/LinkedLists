@@ -25,15 +25,22 @@ class SingleLinked{
         void reverse();
         Node* pop();
         void sublist(int from, int to);
+
+        //Circular
+        void stitch();
+        void rip(int loc);
+        void shift(int by);
+
         //Metrics
         int size();
-        
+        bool isCircular();
 
         friend std::ostream &operator<< (std::ostream &out, const SingleLinked &L){
             Node* ll = L.list;
             while(ll != NULL){
                 out << ll->data << " ";
                 ll = ll->next;
+                if(ll == L.list){break;}
             }
             out << std::endl;
             //out << "list len: " << std::endl;
