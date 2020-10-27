@@ -131,6 +131,56 @@ int SingleLinked::at(int loc){
     return temp->data;
 }
 
+Node* SingleLinked::search(int data){
+    if(isEmpty()){return new Node();}
+    Node* temp = this->list;
+    while(temp!= NULL){
+        if(temp->data == data){
+            return temp;
+        }
+        temp = temp->next;
+        if(temp == this->list){
+            break;
+        }
+    }
+    return new Node();
+}
+
+/*##################################
+                Sorting
+####################################*/
+
+void SingleLinked::sort(bool desc){
+    if(isEmpty() || size() == 1){return;}
+
+    bool circ = isCircular();
+    if(circ){rip(0);}
+
+    int counter = 0;
+    int buf;
+    Node* temp = NULL;
+    while(1){
+        counter = 0;
+        temp = this->list; //start at beginning after each list traversal
+        while(temp != NULL){
+            //SWAP
+            if((temp->next != NULL)&&(temp->data > temp->next->data)){
+                buf = temp->data;
+                temp->data = temp->next->data;
+                temp->next->data = buf;
+            }
+            //NOT
+            else{
+                counter++;
+            }
+            temp = temp->next; //swap or not, still iterate
+        }
+        if(counter == size()+1){break;}
+    }
+    if(desc){reverse();}
+    if(circ){stitch();}
+}
+
 
 /*##################################
                 Manips
@@ -267,5 +317,8 @@ bool SingleLinked::isCircular(){
     return false;
 }
 
+bool SingleLinked::isEmpty(){
+    return (this->list == NULL);
+}
 
 

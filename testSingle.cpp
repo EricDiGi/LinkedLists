@@ -7,9 +7,13 @@ using namespace std;
 
 int main(){
     SingleLinked list = SingleLinked();
-    list.stitch(); // Cannot stitch empty list
+    list.stitch(); // Cannot stitch empty list - AKA this line does nothing
     list.append(0);
     list.stitch();
+    /* If ^ I stitch here
+    then every following function should
+    maintain the circular shape by the end of the program
+    WITHOUT needed to stitch after every function*/
     list.append(1);
     list.append(2);
     list.append(3);
@@ -22,21 +26,21 @@ int main(){
     list.insert(2, 777);
     list.insert(1, 333);
     
-    list.remove(1);
-    list.remove(0);
-    list.remove(80);
+    //list.remove(1);
+    //list.remove(0);
+    //list.remove(80);
     
     cout << list;
-    cout << list.isCircular() << endl;
     
     SingleLinked listPop(list.pop());
-
-    cout << list.isCircular() << endl;
     list.reverse();
     
-    SingleLinked l = list;
+    cout << "Search returns: " << list.search(111)->data << endl;
+    //Invalid search returns new Node()
+
+    list.sort(SingleLinked::DESCENDING);
     
     cout << list;
-    cout << l.isCircular() << endl;
+    //cout << l.isCircular() << endl;
     
 }

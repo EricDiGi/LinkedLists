@@ -9,6 +9,9 @@ class SingleLinked{
         Node* list;
 
     public:
+        static const bool ASCENDING = false;
+        static const bool DESCENDING = true;
+
         //De/Constructors
         SingleLinked();
         SingleLinked(Node* l);
@@ -20,11 +23,17 @@ class SingleLinked{
         void insert(int loc, int ndat);
         void remove(int loc);
         int at(int loc);
+        Node* search(int data);
+
+        //Sorting stuff
+        void sort(bool desc);
 
         //Manips
         void reverse();
         Node* pop();
         void sublist(int from, int to);
+
+
 
         //Circular
         void stitch();
@@ -34,6 +43,7 @@ class SingleLinked{
         //Metrics
         int size();
         bool isCircular();
+        bool isEmpty();
 
         friend std::ostream &operator<< (std::ostream &out, const SingleLinked &L){
             Node* ll = L.list;
