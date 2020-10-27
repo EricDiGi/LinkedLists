@@ -167,6 +167,7 @@ void DoubleLinked::remove(int loc){
 Node* DoubleLinked::search(int data){
     Node* temp = this->list;
     while(temp!=NULL){
+        //circular case
         if(temp->next==this->list)
             break;
         if(temp->data == data){
@@ -178,6 +179,7 @@ Node* DoubleLinked::search(int data){
 }
 
 void DoubleLinked::stitch(){
+    //replace NULLs with the locations of the corresponding elements
     Node* iter = this->list;
     Node* head = this->list;
     while(iter!=NULL){
@@ -212,6 +214,9 @@ void DoubleLinked::rip(int loc){
 }
 
 void DoubleLinked::shift(int i){
+    //Its easiers to connect everything
+    //move to the right location
+    // and then break the circle
     if(!isCircular()){
         stitch();
         rip(i);
@@ -220,6 +225,39 @@ void DoubleLinked::shift(int i){
         rip(i);
         stitch();
     }
+}
+
+void DoubleLinked::sort(bool desc){
+    bool needFix = false;
+    if(isCircular()){rip(0); needFix = true;}
+    //this is like, my third time trying to make this work
+    //iterate through swapping data values
+    //if the swap condition is NOT met increment a counter
+    //if the counter is equal to the length of the list, break.
+    int counter = 0;
+    int buf;
+    Node* temp = NULL;
+    while(1){
+        counter = 0;
+        temp = this->list; //start at beginning after each list traversal
+        while(temp != NULL){
+            //SWAP
+            if((temp->next != NULL)&&(temp->data > temp->next->data)){
+                buf = temp->data;
+                temp->data = temp->next->data;
+                temp->next->data = buf;
+            }
+            //NOT
+            else{
+                counter++;
+            }
+            temp = temp->next; //swap or not, still iterate
+        }
+        if(counter == length()){break;}
+    }
+    //reverse condition // true is descending
+    if(desc){reverse();}
+    if(needFix){stitch();}
 }
 
 int DoubleLinked::length(){
@@ -275,11 +313,14 @@ int DoubleLinked::getMin(){
 }
 
 void DoubleLinked::reverse(){
-    bool fix = false;
-    if(isCircular()){rip(0);fix=true;}
+    bool needsFix = false;
+    if(isCircular()){rip(0);needsFix=true;}
+
+    //This part only works with linear lists
+    //was easier to rip and stitch than make changes to the logic
     Node* temp = NULL;
     Node* curr = this->list;
-    while(curr != NULL){
+    while(curr != NULL){ // <------ would've run forever on circular list
         temp = curr->prev;
         curr->prev = curr->next;
         curr->next = temp;
@@ -287,5 +328,6 @@ void DoubleLinked::reverse(){
     }
     if(temp!=NULL)
         this->list = temp->prev;
-    if(fix){stitch();}
+
+    if(needsFix){stitch();}
 }

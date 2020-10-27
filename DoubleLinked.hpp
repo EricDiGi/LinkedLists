@@ -8,6 +8,8 @@ class DoubleLinked{
     private:
         Node* list;
     public:
+        static const bool ASCENDING = false;
+        static const bool DESCENDING = true;
         DoubleLinked();
         DoubleLinked(Node* node);
         DoubleLinked(const DoubleLinked &L);
@@ -27,6 +29,7 @@ class DoubleLinked{
         void shift(int i);
 
         //Sorting Funcs
+        void sort(bool desc);
 
         //Metrix
         bool isCircular();

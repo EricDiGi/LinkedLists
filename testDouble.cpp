@@ -19,7 +19,7 @@ int main(){
     
     DoubleLinked F = dl;
     dl.stitch(); //needed after the copy to maintain dl as circular list
-    //F.rip(0);
+    F.rip(0);
     F.push(-1);
     F.append(99);
     F.replace(0,222);
@@ -27,6 +27,7 @@ int main(){
     cout << F;
     //F.remove(0);
     F.reverse();
+    F.sort(DoubleLinked::ASCENDING);
     //Node* n = F.search(99);
     //cout << n->data << endl;
     cout << F;
