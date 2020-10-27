@@ -164,6 +164,19 @@ void DoubleLinked::remove(int loc){
     
 }
 
+Node* DoubleLinked::search(int data){
+    Node* temp = this->list;
+    while(temp!=NULL){
+        if(temp->next==this->list)
+            break;
+        if(temp->data == data){
+            return temp;
+        }
+        temp = temp->next;
+    }
+    return NULL;
+}
+
 void DoubleLinked::stitch(){
     Node* iter = this->list;
     Node* head = this->list;
@@ -231,6 +244,9 @@ bool DoubleLinked::isCircular(){
     return false;
 }
 
+bool DoubleLinked::isEmpty(){
+    return (this->list == NULL);
+}
 
 Node* DoubleLinked::Get(){return this->list;}
 
@@ -256,4 +272,20 @@ int DoubleLinked::getMin(){
         temp = temp->next;
     }
     return buf;
+}
+
+void DoubleLinked::reverse(){
+    bool fix = false;
+    if(isCircular()){rip(0);fix=true;}
+    Node* temp = NULL;
+    Node* curr = this->list;
+    while(curr != NULL){
+        temp = curr->prev;
+        curr->prev = curr->next;
+        curr->next = temp;
+        curr = curr->prev;
+    }
+    if(temp!=NULL)
+        this->list = temp->prev;
+    if(fix){stitch();}
 }

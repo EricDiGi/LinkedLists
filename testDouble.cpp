@@ -25,7 +25,10 @@ int main(){
     F.replace(0,222);
     F.insert(0,111);
     cout << F;
-    F.remove(0);
+    //F.remove(0);
+    F.reverse();
+    //Node* n = F.search(99);
+    //cout << n->data << endl;
     cout << F;
     //cout << F.getMax() << endl;
     //cout << F.getMin() << endl;

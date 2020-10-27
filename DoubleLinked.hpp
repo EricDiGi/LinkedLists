@@ -19,6 +19,7 @@ class DoubleLinked{
         void replace(int loc, int ndat);
         void insert(int loc, int ndat);
         void remove(int loc);
+        Node* search(int data);
 
         //List transformations
         void stitch(); //Converts to circular list
@@ -29,12 +30,14 @@ class DoubleLinked{
 
         //Metrix
         bool isCircular();
+        bool isEmpty();
         int length();
         int getMax();
         int getMin();
 
 
         //Just because
+        void reverse(); //Supports circular
         Node* Get();
 
         friend std::ostream &operator<< (std::ostream &out, const DoubleLinked &L){
