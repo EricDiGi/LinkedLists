@@ -136,13 +136,25 @@ void DoubleLinked::remove(int loc){
     if(this->list == NULL){
         return;
     }
-    if(loc > length() && !isCircular()){loc = length();}
+    //Only modify length if not circular, otherwise it doesnt matter
+    if(loc > length() && !isCircular()){loc = loc%length();}
+
+    if(loc == 0){
+        Node* prev = this->list->prev;
+        if(prev != NULL){
+            prev->next = this->list->next;
+        }
+        this->list->next->prev = prev;
+        this->list = this->list->next;
+        return;
+    }
+
+
     prev = this->list;
     curr = this->list->next;
     for(int i = 0;i < loc - 1; i++){
         prev = prev->next;
-        //if(curr->next != NULL)
-            curr = curr->next;
+        curr = curr->next;
     }
     if(curr!=NULL)
         curr->prev = prev->prev;
