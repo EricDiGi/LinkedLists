@@ -13,24 +13,29 @@ class DoubleLinked{
         DoubleLinked(const DoubleLinked &L);
         ~DoubleLinked();
 
+        //List manips
         void push(int ndat);
         void append(int ndat);
         void replace(int loc, int ndat);
         void insert(int loc, int ndat);
+        void remove(int loc);
 
+        //List transformations
         void stitch(); //Converts to circular list
         void rip(int loc); //Will only rip circular lists
         void shift(int i);
 
+        //Sorting Funcs
+
+        //Metrix
         bool isCircular();
+        int length();
+        int getMax();
+        int getMin();
 
+
+        //Just because
         Node* Get();
-
-        /*DoubleLinked operator+ (const int& i){
-            DoubleLinked ll = DoubleLinked(this->list);
-            //ll.shift(i);
-            return ll;
-        }*/
 
         friend std::ostream &operator<< (std::ostream &out, const DoubleLinked &L){
             Node* ll = L.list;

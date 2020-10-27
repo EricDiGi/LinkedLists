@@ -14,7 +14,6 @@ DoubleLinked::DoubleLinked(Node* node){
     this->list->data = node->data;
     this->list->prev = NULL;
     this->list->next = NULL;
-    //this->length = -1;
 }
 
 //Should cover the circular case and linear case
@@ -131,6 +130,28 @@ void DoubleLinked::replace(int loc, int ndat){
 
 }
 
+void DoubleLinked::remove(int loc){
+    Node* prev = NULL;
+    Node* curr = NULL;
+    if(this->list == NULL){
+        return;
+    }
+    if(loc > length() && !isCircular()){loc = length();}
+    prev = this->list;
+    curr = this->list->next;
+    for(int i = 0;i < loc - 1; i++){
+        prev = prev->next;
+        //if(curr->next != NULL)
+            curr = curr->next;
+    }
+    if(curr!=NULL)
+        curr->prev = prev->prev;
+    if(prev->prev != NULL){
+        prev->prev->next = curr;
+    }
+    
+}
+
 void DoubleLinked::stitch(){
     Node* iter = this->list;
     Node* head = this->list;
@@ -176,6 +197,18 @@ void DoubleLinked::shift(int i){
     }
 }
 
+int DoubleLinked::length(){
+    Node* temp = this->list;
+    int iter = 0;
+    while(temp!=NULL){
+        if(temp->next==this->list)
+            break;
+        temp = temp->next;
+        iter++;
+    }
+    return iter;
+}
+
 bool DoubleLinked::isCircular(){
     Node* temp = this->list;
     Node* head = this->list;
@@ -184,4 +217,31 @@ bool DoubleLinked::isCircular(){
         if(temp == head){return true;}
     }
     return false;
+}
+
+
+Node* DoubleLinked::Get(){return this->list;}
+
+int DoubleLinked::getMax(){
+    Node* temp = this->list;
+    int buf = temp->data;
+    while((temp!=NULL)&&(temp->next!=this->list)){
+        if(temp->data > buf){
+            buf = temp->data;
+        }
+        temp = temp->next;
+    }
+    return buf;
+}
+
+int DoubleLinked::getMin(){
+    Node* temp = this->list;
+    int buf = temp->data;
+    while((temp!=NULL)&&(temp->next!=this->list)){
+        if(temp->data < buf){
+            buf = temp->data;
+        }
+        temp = temp->next;
+    }
+    return buf;
 }

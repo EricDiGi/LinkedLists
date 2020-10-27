@@ -19,12 +19,15 @@ int main(){
     
     DoubleLinked F = dl;
     dl.stitch(); //needed after the copy to maintain dl as circular list
-    
+    //F.rip(0);
     F.push(-1);
     F.append(99);
     F.replace(0,222);
     F.insert(0,111);
-    //F.rip(6); //Unlink circular list at 6
     cout << F;
-    cout << dl.isCircular() << endl;
+    F.remove(88);
+    cout << F;
+    //cout << F.getMax() << endl;
+    //cout << F.getMin() << endl;
+    cout << F.isCircular() << endl;
 }
